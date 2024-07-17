@@ -1,57 +1,39 @@
 const events = require("events");
 
+// Function to create the emitter and set up event handlers
 function createEmitter(onOpen, onClose) {
-  const e = new events();
-  e.once('open', onOpen); 
-  e.once('close', onClose);
-  return e;
+    const emitter = new events.EventEmitter();
+
+    // Register the event handlers for 'open' and 'close' events using 'once'
+    emitter.once('open', onOpen);
+    emitter.once('close', onClose);
+
+    return emitter;
 }
 
+// Function to emit the 'open' event
 function opened(emitter) {
- emitter.emit('open'); 
+    emitter.emit('open');
 }
+
+// Function to emit the 'close' event
 function closed(emitter) {
- emitter.emit('close');
+    emitter.emit('close');
 }
 
+// Example usage
 let emitter = createEmitter(
-  () => console.log("Opened!"), () => console.log("Closed!")
+  () => console.log("Opened!"),
+  () => console.log("Closed!")
 );
-opened(emitter);
-closed(emitter);
 
+// Emit the 'open' and 'close' events
+opened(emitter);  // Output: "Opened!"
+opened(emitter);  // No output, callback already invoked
+closed(emitter);  // Output: "Closed!"
+closed(emitter);  // No output, callback already invoked
+
+// Export the functions for external use
 module.exports.createEmitter = createEmitter;
 module.exports.opened = opened;
 module.exports.closed = closed;
-
-/*
-75%
-
-const events = require("events");
-const e = new events();
-
-function createEmitter(onOpen, onClose) {
-    
-  e.once('open', onOpen); 
-  e.once('close', onClose);
-  
-}
-
-function opened(emitter) {
- e.emit('open', emitter); 
-}
-function closed(emitter) {
- e.emit('close', emitter);
-}
-
-let emitter = createEmitter(
-  () => console.log("Opened!"), () => console.log("Closed!")
-);
-opened(emitter);
-closed(emitter);
-
-module.exports.createEmitter = createEmitter;
-module.exports.opened = opened;
-module.exports.closed = closed;
-
-*/
